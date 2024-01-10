@@ -10,3 +10,5 @@ This is a simple Django web application featuring a blog. The application serves
 4. **Run the development server:** `python manage.py runserver`.
 
 Feel free to reach out for collaboration or contribute to the project's growth.
+
+This application is based off the YouTube playlist found here https://youtu.be/UmljXZIypDc?si=ZJPMjR3m7weNm-pD
