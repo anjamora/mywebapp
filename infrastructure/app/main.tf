@@ -18,12 +18,11 @@ terraform {
   }
 }
 
-
-
 provider "aws" {
-  region = "us-east-2" # Set your desired AWS region
+  region = var.region # Set your desired AWS region
 }
 
+#security groups
 resource "aws_security_group" "allow_http" {
   name        = "allow_http"
   description = "Allow inbound HTTP traffic"
@@ -36,37 +35,38 @@ resource "aws_security_group" "allow_http" {
   }
 }
 
-resource "aws_instance" "web01" {
-  ami           = "ami-0cd3c7f72edd5b06d" # Replace with your desired AMI ID
-  instance_type = "t2.micro"             # Replace with your desired instance type`
+#ec2 isntances
+resource "aws_instance" "webapp" {
+  ami           = var.ami               #"ami-0cd3c7f72edd5b06d" # Replace with your desired AMI ID
+  instance_type = var.instance_type     #"t2.micro"             # Replace with your desired instance type`
   vpc_security_group_ids = [aws_security_group.allow_http.id]
   user_data = <<-EOF
               #!/bin/bash
-              echo "Hello, World! 1" > index.html
+              echo "Hello, Maya!" > index.html
               python3 -m http.server 8080 &
               EOF
+  tags = {
+    Name  = var.instance_name
+  }
 }
 
-resource "aws_s3_bucket" "webapp-db" {
-  bucket = "anjamora-webapp-db"
+#s3 buckets
+resource "aws_s3_bucket" "webapp-data" {
+  bucket = var.bucket_name
   force_destroy = true
   
 }
 
-# resource "aws_s3_bucket_acl" "webapp-db" {
-#   bucket = aws_s3_bucket.webapp-db.bucket
-#   acl    = "private"
-# }
-resource "aws_s3_bucket_versioning" "webapp-db" {
-  bucket = aws_s3_bucket.webapp-db.bucket
+resource "aws_s3_bucket_versioning" "webapp-data" {
+  bucket = aws_s3_bucket.webapp-data.bucket
 
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "webapp-db" {
-  bucket = aws_s3_bucket.webapp-db.bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "webapp-data" {
+  bucket = aws_s3_bucket.webapp-data.bucket
 
   rule {
     apply_server_side_encryption_by_default {
@@ -74,4 +74,5 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "webapp-db" {
     }
   }
 }
+
 

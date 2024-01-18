@@ -1,11 +1,11 @@
 terraform {
 # Uncomment this section after applying and run init again
   # backend "s3" {
-  #   bucket         = "anjamora-tf-state"  # Use the same bucket name
+  #   bucket         = var.bucket_name  # Use the same bucket name
   #   key            = "terraform.tfstate"
-  #   region         = "us-east-2"        # Update with the same AWS region
+  #   region         = var.region       # Update with the same AWS region
   #   encrypt        = true
-  #   dynamodb_table = "tf-locking"   # Optional: Use a DynamoDB table for state locking
+  #   dynamodb_table = var.dynamodb_table_name   # Optional: Use a DynamoDB table for state locking
   # }
 
   required_providers {
@@ -17,12 +17,12 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.region
 }
 
-#S3 bucket start
+#S3 state bucket
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "anjamora-tf-state"
+  bucket = var.bucket_name
   force_destroy = true
   
 }
@@ -48,12 +48,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
     }
   }
 }
-#S3 bucket end
 
 
 #lock file to stop multiple applies
 resource "aws_dynamodb_table" "terraform_lock" {
-  name           = "tf-locking"  # Update with a unique table name
+  name           = var.dynamodb_table_name  # Update with a unique table name
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "LockID"
   attribute {
