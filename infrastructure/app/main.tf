@@ -1,12 +1,17 @@
 # main.tf
 terraform {
-#   backend "s3" {
-#     bucket         = "anjamora-tf-state" # Replace with your S3 bucket name
-#     key            = "terraform.tfstate"   # Replace with your desired path in the bucket
-#     region         = "us-east-2"                   # Replace with your desired AWS region
-#     encrypt        = true
-#     dynamodb_table = "tf-locking"             # Replace with your DynamoDB table name for state locking
-#   }
+
+  #Assumes you have tf-backend built
+  #Runinit tf-backend before uncommenting
+
+  # backend "s3" {
+  #   bucket         = "anjamora-tf-state"
+  #   key            = "app/terraform.tfstate"
+  #   region         = "us-east-2"      
+  #   encrypt        = true
+  #   dynamodb_table = "tf-locking"   
+  # }
+  
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -15,18 +20,18 @@ terraform {
   }
 }
 
+provider "aws" {
+  region = "us-east-2" # Set your desired AWS region
+}
+
 variable "db_pass"  {
   description = "password for database"
   type = string
   sensitive = true
 }
 
-provider "aws" {
-  region = "us-east-2" # Set your desired AWS region
-}
-
 module "webapp" {
-  source = "../app-module"
+  source = "../modules/app-module"
 
   #input variables
   region = "us-east-2"
