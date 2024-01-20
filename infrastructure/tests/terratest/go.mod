@@ -1,6 +1,8 @@
-module github.com/anjamora/mywebapp
+module github.com/anjamora/mywebapp/infrastructure/tests/terratest
 
 go 1.21.6
+
+require github.com/gruntwork-io/terratest v0.46.11
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
@@ -19,7 +21,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.1 // indirect
-	github.com/gruntwork-io/terratest v0.46.11 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-getter v1.7.1 // indirect
