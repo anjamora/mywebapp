@@ -24,11 +24,11 @@ provider "aws" {
   region = "us-east-2" # Set your desired AWS region
 }
 
-variable "db_pass"  {
-  description = "password for database"
-  type = string
-  sensitive = true
-}
+# variable "db_pass"  {
+#   description = "password for database"
+#   type = string
+#   sensitive = true
+# }
 
 module "webapp" {
   source = "../modules/app-module"
@@ -41,5 +41,10 @@ module "webapp" {
   bucket_name = "anjamora-webapp-data"
   db_name = "webapp-db"
   db_user = "webapp-user"
-  db_pass = var.db_pass
+  db_pass = "password"
 }
+
+output "instance_ip_addr" {
+  value = module.webapp.instance_ip_addr
+}
+
