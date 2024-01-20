@@ -91,12 +91,11 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -input=false
       
-    - uses: actions/setup-go@v2
-        
+    - uses: actions/setup-go@v4
+
     - name: Terratest Execution
       working-directory: infrastructure/tests/terratest/
-      run: |
-        go test . -v timeout 10m
+      run: go test -v timeout 10m
     
     
       # On push to "master", build or change infrastructure according to Terraform configuration files
