@@ -94,6 +94,7 @@ jobs:
     - uses: actions/setup-go@v4
       with:
         go-version: 1.21
+        check-latest: true
 
     - name: Terratest Execution
       working-directory: infrastructure/tests/terratest/
