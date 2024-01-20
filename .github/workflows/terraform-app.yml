@@ -98,7 +98,7 @@ jobs:
 
     - name: Terratest Execution
       working-directory: infrastructure/tests/terratest/
-      run: go test -v timeout 10m
+      run: go test . -v timeout 10m
     
     
       # On push to "master", build or change infrastructure according to Terraform configuration files
